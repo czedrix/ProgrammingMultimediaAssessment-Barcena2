@@ -18,6 +18,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style>
          body {font-family: "Times New Roman", Georgia, Serif;}
         h1, h2, h3, h4, h5, h6 {
@@ -27,9 +28,8 @@
     </style>
   </head>
   <body>
-
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="#">
           <img src="Assets/Logo.png" width="250" height="150"><a href="index.html"></a>
         </a>
       </nav>
@@ -91,13 +91,15 @@
       //Auth
       function Auth() {
         const dbRef = ref(db);
-
+        if (!Validation()){
+          return;
+        }
         get(child(dbRef, "Users/" + username.value)).then((snapshot) => {
           if (snapshot.exists()) {
             let passdecrypt = decryptPassword(snapshot.val().password);
             if (passdecrypt == pass.value) {
               login(snapshot.val());
-              alert("Successfully Logged");
+              alert("Successfully Logged, Hello " + username.value +"!");
             } else alert("Username or Password Invalid");
           } else {
             alert("Username or Password Invalid");
@@ -105,6 +107,20 @@
         });
       }
 
+      //VALIDATION
+      function Empty(str) {
+        return str === null || str.match(/^ *$/) !== null;
+      }
+      
+      function Validation(){
+        if (
+          Empty(pass.value)
+        ) {
+          alert("Fill In All Fields");
+          return false;
+        }
+        return true;
+      }
       function decryptPassword(passdecrypt) {
         var decryptpass = CryptoJS.AES.decrypt(passdecrypt, pass.value);
         return decryptpass.toString(CryptoJS.enc.Utf8);

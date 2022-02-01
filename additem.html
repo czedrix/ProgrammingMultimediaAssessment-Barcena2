@@ -49,9 +49,19 @@ h1, h2, h3, h4, h5, h6 {
 
 <h1>Add New Item</h1>
 
-<input type="date" class="form-control mb-3" id="dateInput" placeholder="Enter Date">
+<input type="number" class="form-control mb-3" id="itemCode" placeholder="Enter Item Code">
 <input type="text" class="form-control mb-3" id="itemInput" placeholder="Item Name">
-<input type="number" class="form-control mb-3" id="Quantity1" placeholder="Enter Quantity">
+<label for="validationDefault04" class="form-label">Item Category</label>
+            <select class="form-select" id="cateGory" required>
+                <option selected disabled value="">Choose Item Category</option>
+                <option value ="Keychain">Keychain</option>
+                <option value = "Mugs">Mugs</option>
+                <option value = "Tote bags">Tote bags</option>
+                <option value = "Shirts">Shirts</option>
+            </select>
+        </br>
+<input type="text" class="form-control mb-3" id="itemPrice" placeholder="Item Price">
+<input type="number" class="form-control mb-3" id="Quantity1" placeholder="Enter Initial Quantity">
 <button type="button" class="btn btn-primary" id="place-item">Add</button>
 
 
@@ -85,8 +95,10 @@ h1, h2, h3, h4, h5, h6 {
     const db = getDatabase();
 
     //REFERENCES
-    const date = document.getElementById('dateInput');
+    const code = document.getElementById('itemCode');
     const item = document.getElementById('itemInput');
+    const category = document.getElementById('cateGory');
+    const price = document.getElementById('itemPrice');
     const q1 = document.getElementById('Quantity1');
     const placeitem = document.getElementById('place-item');
 
@@ -97,8 +109,10 @@ h1, h2, h3, h4, h5, h6 {
       
       function Validation(){
         if (
-          Empty(date.value) ||
+          Empty(code.value) ||
           Empty(item.value) ||
+          Empty(category.value) ||
+          Empty(price.value) ||
           Empty(q1.value)
         ) {
           alert("Fill In All Fields");
@@ -113,8 +127,10 @@ h1, h2, h3, h4, h5, h6 {
           return;
         }
         set(ref(db, "NewItems/"+ itemInput.value),{
-            Date: date.value,
+            itemCode: code.value,
             itemInput: item.value,
+            cateGory: category.value,
+            itemPrice: price.value,
             Quantity1 : q1.value,
         })
 
